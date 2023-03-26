@@ -13,30 +13,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const rootDir = process.cwd();
 
   const browser = await chromium.puppeteer.launch({
-        args: [
-          ...chromium.args,
-          '--hide-scrollbars',
-          '--disable-web-security',
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-gpu',
-          '--no-default-browser-check',
-          '--no-first-run',
-          '--disable-default-apps',
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          `--disable-infobars`,
-          `--window-position=0,0`,
-          `--ignore-certifcate-errors`,
-          `--ignore-certifcate-errors-spki-list`,
-          '--user-data-dir=' + rootDir,
-        ],
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath,
-        headless: true,
-        ignoreHTTPSErrors: true,
-      });
+    args: [
+      ...chromium.args,
+      '--hide-scrollbars',
+      '--disable-web-security',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--no-default-browser-check',
+      '--no-first-run',
+      '--disable-default-apps',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      `--disable-infobars`,
+      `--window-position=0,0`,
+      `--ignore-certifcate-errors`,
+      `--ignore-certifcate-errors-spki-list`,
+      '--user-data-dir=' + rootDir,
+    ],
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath,
+    headless: true,
+    ignoreHTTPSErrors: true,
+  });
   const page = await browser.newPage();
 
   try {
