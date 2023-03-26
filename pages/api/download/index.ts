@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import axios from 'axios';
+import chromium from 'chrome-aws-lambda';
 import fs from 'fs';
 import JSZip from 'jszip';
 import path from 'path';
@@ -14,34 +15,39 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const isDevelopment = process.env.NODE_ENV === 'development';
 
-  const executablePath = isDevelopment ? puppeteer.executablePath() : '/usr/bin/google-chrome';
-
-  const browser = await puppeteer.launch({
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--no-default-browser-check',
-      '--no-first-run',
-      '--disable-default-apps',
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      `--disable-infobars`,
-      `--window-position=0,0`,
-      `--ignore-certifcate-errors`,
-      `--ignore-certifcate-errors-spki-list`,
-      '--user-data-dir=' + rootDir,
-    ],
-    headless: true,
-    executablePath,
-  });
+  const browser = isDevelopment
+    ? await puppeteer.launch({
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--no-default-browser-check',
+          '--no-first-run',
+          '--disable-default-apps',
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          `--disable-infobars`,
+          `--window-position=0,0`,
+          `--ignore-certifcate-errors`,
+          `--ignore-certifcate-errors-spki-list`,
+          '--user-data-dir=' + rootDir,
+        ],
+      })
+    : await chromium.puppeteer.launch({
+        args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
+        headless: true,
+        ignoreHTTPSErrors: true,
+      });
   const page = await browser.newPage();
 
   try {
     // Go to the album page
     await page.goto(albumLink);
 
+    // @ts-ignore
     const photoLinks = await page.evaluate(() => {
       let links = [];
       let photos = document.querySelectorAll<HTMLLinkElement>('[aria-label="Photo album photo"]');
@@ -69,6 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const filename = path.join(
           photosDir,
+          // @ts-ignore
           `${path.basename(await page.$eval(imageSelector, (img: any) => img.src)).split('.jpg')[0]}.jpg`
         );
 
@@ -76,6 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const photoSignal = photoController.signal;
 
         // Download the photo
+        // @ts-ignore
         const fileUrl = await page.$eval(imageSelector, (img: any) => img.src);
 
         const response = await axios.get(fileUrl as string, {
