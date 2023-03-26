@@ -13,7 +13,6 @@ const isDevelopment = !process.env.AWS_LAMBDA_FUNCTION_VERSION;
 if (!isDevelopment) {
   // running on the Vercel platform.
   chromium = require('chrome-aws-lambda');
-  puppeteer = require('puppeteer-core');
 } else {
   // running locally.
   puppeteer = require('puppeteer');
