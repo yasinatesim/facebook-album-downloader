@@ -8,7 +8,7 @@
     "api": {
       "memory": 1024,
       "maxDuration": 10,
-      "runtime": "vercel-node-17"
+      "runtime": "now-node@16.13.0"
     }
   },
   "routes": [{ "src": "/api/download", "dest": "/api/download.js" }]
