@@ -2,7 +2,16 @@
   "build": {
     "env": {
       "PLAYWRIGHT_BROWSERS_PATH": "/usr/bin/"
-    },
-    "command": "yarn install && yarn build"
-  }
+    }
+  },
+  "functions": {
+    "api": {
+      "memory": 1024,
+      "maxDuration": 10,
+      "runtime": "vercel-node-17"
+    }
+  },
+  "routes": [
+    { "src": "/api/download", "dest": "/api/download.js" }
+  ]
 }
