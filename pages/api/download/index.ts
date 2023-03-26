@@ -1,48 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import axios from 'axios';
+import chromium from 'chrome-aws-lambda';
 import fs from 'fs';
 import JSZip from 'jszip';
 import path from 'path';
 import rimraf from 'rimraf';
-
-let chromium: any = {};
-let puppeteer: any;
-const isDevelopment = !process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.NODE_ENV === 'development';
-
-if (!isDevelopment) {
-  // running on the Vercel platform.
-  chromium = require('chrome-aws-lambda');
-} else {
-  // running locally.
-  puppeteer = require('puppeteer');
-}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const albumLink = req.query.album as string;
 
   const rootDir = process.cwd();
 
-  const browser = isDevelopment
-    ? await puppeteer.launch({
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-gpu',
-          '--no-default-browser-check',
-          '--no-first-run',
-          '--disable-default-apps',
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          `--disable-infobars`,
-          `--window-position=0,0`,
-          `--ignore-certifcate-errors`,
-          `--ignore-certifcate-errors-spki-list`,
-          '--user-data-dir=' + rootDir,
-        ],
-      })
-    : await chromium.puppeteer.launch({
+  const browser = await chromium.puppeteer.launch({
         args: [
           ...chromium.args,
           '--hide-scrollbars',
