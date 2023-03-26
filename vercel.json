@@ -1,7 +1,7 @@
 {
   "functions": {
     "pages/api/download.ts": {
-      "memory": 3008,
+      "memory": 1024,
       "maxDuration": 10
     },
     "pages/api/download.js": {
