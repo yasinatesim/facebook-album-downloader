@@ -4,15 +4,26 @@ import axios from 'axios';
 import fs from 'fs';
 import JSZip from 'jszip';
 import path from 'path';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import rimraf from 'rimraf';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const albumLink = req.query.album as string;
 
+  const executablePath = puppeteer.executablePath();
+
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-default-browser-check', '--no-first-run', '--disable-default-apps'],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--no-default-browser-check',
+      '--no-first-run',
+      '--disable-default-apps',
+    ],
     headless: true,
+    executablePath,
   });
   const page = await browser.newPage();
 
@@ -56,7 +67,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Download the photo
         const fileUrl = await page.$eval(imageSelector, (img: any) => img.src);
 
-        const response = await axios.get(fileUrl as string, { responseType: 'stream', cancelToken: new axios.CancelToken(function executor(c) {
+        const response = await axios.get(fileUrl as string, {
+          responseType: 'stream',
+          cancelToken: new axios.CancelToken(function executor(c) {
             // Cancel the request with this controller when requested
             photoSignal.addEventListener('abort', () => {
               c();
