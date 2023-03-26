@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const isDevelopment = process.env.NODE_ENV === 'development';
 
-const executablePath = isDevelopment ? puppeteer.executablePath() : '/usr/bin/google-chrome';
+  const executablePath = isDevelopment ? puppeteer.executablePath() : '/usr/bin/google-chrome';
 
   const browser = await puppeteer.launch({
     args: [
