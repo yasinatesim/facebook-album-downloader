@@ -16,7 +16,6 @@ Facebook Album Downloader
   · <a href="https://github.com/yasinatesim/facebook-album-downloader/issues">Request Feature</a>
 </p>
 
-
 ## 📖 About
 
 Facebook Album Downloader is a web application that allows users to download Facebook photo albums in full resolution. Simply enter the link to the album you want to download, and the application will create a ZIP archive containing all photos from the album.
@@ -82,21 +81,22 @@ The main feature of this application is to allow users to download Facebook albu
 
 ## Structure
 
-  - `pages` - Contains top-level pages of the application.
-    - `api` - Contains serverless API endpoints.
-      - `download.ts` - Downloads a Facebook album using Puppeteer to scrape the HTML.
-    - `index.tsx` - Renders the root component into the DOM.
+- `pages` - Contains top-level pages of the application.
+  - `api` - Contains serverless API endpoints.
+    - `download.ts` - Downloads a Facebook album using Puppeteer to scrape the HTML.
+  - `index.tsx` - Renders the root component into the DOM.
 
 The `src` directory contains the following:
-  - `styles` - Contains global styles.
-    `global.scss` - Global SCSS stylesheet.
-  - `containers`
-    - `Home` - Contains the main component of the application.
-      - `Home.module.scss` - Local SCSS stylesheet for the Home component.
-      - `Home.tsx` - Renders a form that allows users to input a Facebook album link and start downloading it.
-  - `Hooks`
-    `index.ts` - Exports all custom hooks.
-    `useBeforeUnload.ts` - Provides a hook that warns the user before leaving the page if a download is in progress.
+
+- `styles` - Contains global styles.
+  `global.scss` - Global SCSS stylesheet.
+- `containers`
+  - `Home` - Contains the main component of the application.
+    - `Home.module.scss` - Local SCSS stylesheet for the Home component.
+    - `Home.tsx` - Renders a form that allows users to input a Facebook album link and start downloading it.
+- `Hooks`
+  `index.ts` - Exports all custom hooks.
+  `useBeforeUnload.ts` - Provides a hook that warns the user before leaving the page if a download is in progress.
 
 ## Getting Started
 
@@ -105,7 +105,6 @@ The `src` directory contains the following:
 - Node (v17.0.0+)
 
 - Npm (v8.1.0+)
-
 
 ### ⚙️ How To Use
 
@@ -168,10 +167,9 @@ yarn lint
 yarn format
 ```
 
-
 ## 🔑 License
 
-* Copyright © 2023 - MIT License.
+- Copyright © 2023 - MIT License.
 
 See [LICENSE](https://github.com/yasinatesim/facebook-album-downloader/blob/main/LICENSE) for more information.
 

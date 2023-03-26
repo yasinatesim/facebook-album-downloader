@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-
 const useBeforeUnload = (downloading: boolean) => {
   useEffect(() => {
     const controller = new AbortController();
