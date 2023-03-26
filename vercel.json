@@ -2,6 +2,9 @@
   "build": {
     "env": {
       "PLAYWRIGHT_BROWSERS_PATH": "/usr/bin/"
+    },
+    "scripts": {
+      "build": "yarn install && yarn build"
     }
   }
 }
