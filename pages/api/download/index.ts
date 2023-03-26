@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import axios from 'axios';
-import chromium from 'chrome-aws-lambda';
 import fs from 'fs';
 import JSZip from 'jszip';
 import path from 'path';
+import puppeteer from 'puppeteer';
 import rimraf from 'rimraf';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -12,11 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const rootDir = process.cwd();
 
-  const browser = await chromium.puppeteer.launch({
+  const browser = await puppeteer.launch({
     args: [
-      ...chromium.args,
-      '--hide-scrollbars',
-      '--disable-web-security',
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage',
@@ -32,10 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `--ignore-certifcate-errors-spki-list`,
       '--user-data-dir=' + rootDir,
     ],
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
-    headless: true,
-    ignoreHTTPSErrors: true,
   });
   const page = await browser.newPage();
 
