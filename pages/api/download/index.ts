@@ -8,12 +8,11 @@ import rimraf from 'rimraf';
 
 let chromium: any = {};
 let puppeteer: any;
-const isDevelopment = !process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.NODE_ENV !== 'development';
+const isDevelopment = !process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.NODE_ENV === 'development';
 
 if (!isDevelopment) {
   // running on the Vercel platform.
   chromium = require('chrome-aws-lambda');
-  puppeteer = require('playwright-core');
 } else {
   // running locally.
   puppeteer = require('puppeteer');
@@ -43,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           '--user-data-dir=' + rootDir,
         ],
       })
-    : await puppeteer.launch({
+    : await chromium.puppeteer.launch({
         args: [
           ...chromium.args,
           '--hide-scrollbars',
