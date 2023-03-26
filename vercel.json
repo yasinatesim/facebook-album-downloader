@@ -11,7 +11,5 @@
       "runtime": "vercel-node-17"
     }
   },
-  "routes": [
-    { "src": "/api/download", "dest": "/api/download.js" }
-  ]
+  "routes": [{ "src": "/api/download", "dest": "/api/download.js" }]
 }
