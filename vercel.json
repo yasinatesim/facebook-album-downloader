@@ -1,8 +1,14 @@
 {
-  "functions": {
-    "api": {
-      "runtime": "now-node@16.13.0",
-      "memory": 1024
+  "build": {
+    "env": {
+      "PLAYWRIGHT_BROWSERS_PATH": "/usr/bin/"
     }
-  }
+  },
+  "functions": {
+    "api/*": {
+      "runtime": "node12",
+      "memory": 512
+    }
+  },
+  "routes": [{ "src": "/api/download", "dest": "/api/download.js" }]
 }
