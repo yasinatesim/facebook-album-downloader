@@ -4,12 +4,13 @@ import axios from 'axios';
 import fs from 'fs';
 import JSZip from 'jszip';
 import path from 'path';
-import puppeteer from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 import rimraf from 'rimraf';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const albumLink = req.query.album as string;
 
+  const rootDir = process.cwd();
   const executablePath = puppeteer.executablePath();
 
   const browser = await puppeteer.launch({
@@ -21,6 +22,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       '--no-default-browser-check',
       '--no-first-run',
       '--disable-default-apps',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      `--disable-infobars`,
+      `--window-position=0,0`,
+      `--ignore-certifcate-errors`,
+      `--ignore-certifcate-errors-spki-list`,
+      '--user-data-dir=' + rootDir,
     ],
     headless: true,
     executablePath,
