@@ -8,7 +8,7 @@ import rimraf from 'rimraf';
 
 let chromium: any = {};
 let puppeteer: any;
-const isDevelopment = !process.env.AWS_LAMBDA_FUNCTION_VERSION;
+const isDevelopment = !process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.NODE_ENV !== 'development';
 
 if (!isDevelopment) {
   // running on the Vercel platform.
