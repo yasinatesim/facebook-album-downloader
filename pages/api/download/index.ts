@@ -4,15 +4,13 @@ import axios from 'axios';
 import fs from 'fs';
 import JSZip from 'jszip';
 import path from 'path';
-import puppeteer from 'puppeteer';
+import { chromium } from 'playwright';
 import rimraf from 'rimraf';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const albumLink = req.query.album as string;
 
-  const rootDir = process.cwd();
-
-  const browser = await puppeteer.launch({
+  const browser = await chromium.launch({
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -23,11 +21,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       '--disable-default-apps',
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      `--disable-infobars`,
-      `--window-position=0,0`,
-      `--ignore-certifcate-errors`,
-      `--ignore-certifcate-errors-spki-list`,
-      '--user-data-dir=' + rootDir,
+      '--disable-infobars',
+      '--window-position=0,0',
+      '--ignore-certifcate-errors',
+      '--ignore-certifcate-errors-spki-list',
     ],
   });
   const page = await browser.newPage();
@@ -36,15 +33,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Go to the album page
     await page.goto(albumLink);
 
-    // @ts-ignore
-    const photoLinks = await page.evaluate(() => {
-      let links = [];
-      let photos = document.querySelectorAll<HTMLLinkElement>('[aria-label="Photo album photo"]');
-      for (let i = 0; i < photos.length; i++) {
-        links.push(photos[i].href);
-      }
-      return links;
-    });
+    const photoLinks = await page.$$eval('[aria-label="Photo album photo"]', (elements: HTMLLinkElement[]) =>
+      elements.map((element) => element.href)
+    );
 
     console.log(`Found a total of ${photoLinks.length} photos.`);
 
@@ -64,17 +55,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const filename = path.join(
           photosDir,
-          // @ts-ignore
-          `${path.basename(await page.$eval(imageSelector, (img: any) => img.src)).split('.jpg')[0]}.jpg`
+          `${path.basename(await page.$eval(imageSelector, (img: HTMLImageElement) => img.src)).split('.jpg')[0]}.jpg`
         );
 
         const photoController = new AbortController();
         const photoSignal = photoController.signal;
 
         // Download the photo
-        // @ts-ignore
-        const fileUrl = await page.$eval(imageSelector, (img: any) => img.src);
-
+        const fileUrl = await page.$eval(imageSelector, (img: HTMLImageElement) => img.src);
         const response = await axios.get(fileUrl as string, {
           responseType: 'stream',
           cancelToken: new axios.CancelToken(function executor(c) {
@@ -104,7 +92,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // If an AbortError is caught, break the loop
         if (axios.isCancel(e)) {
           console.log('Request was canceled by the user.');
-
           controller.abort();
           break;
         } else {

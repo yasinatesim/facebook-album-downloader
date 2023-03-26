@@ -15,6 +15,7 @@
     "classnames": "^2.3.2",
     "jszip": "^3.10.1",
     "next": "^13.2.4",
+    "playwright": "^1.32.1",
     "puppeteer": "^19.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
