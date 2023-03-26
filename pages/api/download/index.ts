@@ -1,19 +1,28 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import axios from 'axios';
-import chromium from 'chrome-aws-lambda';
 import fs from 'fs';
 import JSZip from 'jszip';
 import path from 'path';
-import puppeteer from 'puppeteer';
 import rimraf from 'rimraf';
+
+let chromium: any = {};
+let puppeteer: any;
+const isDevelopment = !process.env.AWS_LAMBDA_FUNCTION_VERSION;
+
+if (!isDevelopment) {
+  // running on the Vercel platform.
+  chromium = require('chrome-aws-lambda');
+  puppeteer = require('puppeteer-core');
+} else {
+  // running locally.
+  puppeteer = require('puppeteer');
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const albumLink = req.query.album as string;
 
   const rootDir = process.cwd();
-
-  const isDevelopment = process.env.NODE_ENV === 'development';
 
   const browser = isDevelopment
     ? await puppeteer.launch({
