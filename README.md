@@ -11,7 +11,6 @@ Facebook Album Downloader
 <p  align="center">A simple web application that allows users to download Facebook albums in full resolution.</p>
 
 <p align="center">
-· <a  href="https://facebook-album-downloader.yasinatesim.vercel.app/">View Demo</a>
   · <a href="https://github.com/yasinatesim/facebook-album-downloader/issues">Report Bug</a>
   · <a href="https://github.com/yasinatesim/facebook-album-downloader/issues">Request Feature</a>
 </p>
