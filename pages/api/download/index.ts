@@ -10,7 +10,10 @@ import rimraf from 'rimraf';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const albumLink = req.query.album as string;
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-default-browser-check', '--no-first-run', '--disable-default-apps'],
+    headless: true,
+  });
   const page = await browser.newPage();
 
   try {
