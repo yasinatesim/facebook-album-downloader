@@ -11,7 +11,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const albumLink = req.query.album as string;
 
   const rootDir = process.cwd();
-  const executablePath = puppeteer.executablePath();
+
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
+const executablePath = isDevelopment ? puppeteer.executablePath() : '/usr/bin/google-chrome';
 
   const browser = await puppeteer.launch({
     args: [
