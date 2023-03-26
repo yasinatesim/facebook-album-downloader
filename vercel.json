@@ -1,15 +1,8 @@
 {
-  "build": {
-    "env": {
-      "PLAYWRIGHT_BROWSERS_PATH": "/usr/bin/"
-    }
-  },
   "functions": {
     "api": {
-      "memory": 1024,
-      "maxDuration": 10,
-      "runtime": "now-node@16.13.0"
+      "runtime": "now-node@16.13.0",
+      "memory": 1024
     }
-  },
-  "routes": [{ "src": "/api/download", "dest": "/api/download.js" }]
+  }
 }
