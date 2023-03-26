@@ -6,7 +6,7 @@
   },
   "functions": {
     "api/*": {
-      "runtime": "node12",
+      "runtime": "node14",
       "memory": 512
     }
   },
