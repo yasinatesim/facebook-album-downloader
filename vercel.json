@@ -6,8 +6,8 @@
   },
   "functions": {
     "api/*": {
-      "runtime": "node17",
-      "memory": 512
+      "runtime": "node16",
+      "memory": 1024
     }
   },
   "routes": [{ "src": "/api/download", "dest": "/api/download.js" }]
