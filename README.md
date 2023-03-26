@@ -17,16 +17,6 @@ Facebook Album Downloader
 </p>
 
 
-<h5> Table of Content </h5>
-<hr />
-  <p align="center">
-· <a  href="#about">About</a>
-· <a  href="#tech-stack">Tech Stack</a>
-· <a  href="#whats-inside">What's Inside?</a>
-· <a  href="#getting-started">Getting Started</a>
-· <a  href="#license">License</a>
-  </p>
-
 ## 📖 About
 
 Facebook Album Downloader is a web application that allows users to download Facebook photo albums in full resolution. Simply enter the link to the album you want to download, and the application will create a ZIP archive containing all photos from the album.
