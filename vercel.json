@@ -2,9 +2,6 @@
   "build": {
     "env": {
       "PLAYWRIGHT_BROWSERS_PATH": "/usr/bin/"
-    },
-    "scripts": {
-      "build": "npm run install && npm run build"
     }
   }
 }
