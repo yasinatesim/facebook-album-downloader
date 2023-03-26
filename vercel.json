@@ -2,11 +2,11 @@
   "functions": {
     "pages/api/download.ts": {
       "memory": 10000,
-      "maxDuration": 1000
+      "maxDuration": 900
     },
     "pages/api/download.js": {
       "memory": 10000,
-      "maxDuration": 1000
+      "maxDuration": 900
     }
   }
 }
