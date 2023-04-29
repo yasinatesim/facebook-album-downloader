@@ -7,6 +7,13 @@ import path from 'path';
 import puppeteer from 'puppeteer';
 import rimraf from 'rimraf';
 
+export const config = {
+  api: {
+    bodyParser: false,
+    responseLimit: '50mb',
+  },
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const albumLink = req.query.album as string;
 
