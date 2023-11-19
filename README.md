@@ -133,6 +133,8 @@ yarn dev
 cd facebook-album-downloader
 ```
 
+3. Rename .env.example file to .env
+
 3. Run this command **without `yarn` or `yarn install`**
 
 ```bash
@@ -143,6 +145,14 @@ or
 
 ```bash
 yarn && docker-compose up --build
+
+# or
+
+# For Build
+docker build -t facebook-album-downloader .
+
+# For Run
+docker run -p 3000:3000 facebook-album-downloader
 ```
 
 App is running on [http://localhost:3000](http://localhost:3000)
