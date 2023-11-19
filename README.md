@@ -135,7 +135,7 @@ cd facebook-album-downloader
 
 3. Rename .env.example file to .env
 
-3. Run this command **without `yarn` or `yarn install`**
+4. Run this command **without `yarn` or `yarn install`**
 
 ```bash
 yarn setup
