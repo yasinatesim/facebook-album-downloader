@@ -10,7 +10,7 @@ import rimraf from 'rimraf';
 export const config = {
   api: {
     bodyParser: false,
-    responseLimit: '50mb',
+    responseLimit: '200mb',
   },
 };
 
@@ -20,6 +20,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const rootDir = process.cwd();
 
   const browser = await puppeteer.launch({
+    // headless: false,
+    // executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -42,6 +45,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     // Go to the album page
     await page.goto(albumLink);
+
+    // Check if the "Close" button is present and click it if exists
+    const closeButton = await page.$('[aria-label="Close"]');
+    if (closeButton) {
+        await closeButton.click();
+    }
+
+    const list = await page.$('[role="list"]');
+    if (list) {
+        const scrollableParent = await list.evaluateHandle((el: Element) => el.parentElement?.parentElement);
+        await page.evaluate(async (scrollable: any) => {
+            // Function to determine if an element is scrollable
+            function isScrollable(element: Element) {
+                return element.scrollHeight > element.clientHeight;
+            }
+
+            if (isScrollable(scrollable)) {
+                while (true) {
+                    const atBottom = await new Promise<boolean>((resolve) => {
+                        const lastScrollTop = scrollable.scrollTop;
+                        scrollable.scrollTo({ top: scrollable.scrollHeight });
+                        setTimeout(() => {
+                            resolve(lastScrollTop === scrollable.scrollTop);
+                        }, 1000); // Adjust delay as needed
+                    });
+
+                    if (atBottom) break;
+                }
+            }
+        }, scrollableParent);
+    }
 
     // @ts-ignore
     const photoLinks = await page.evaluate(() => {
