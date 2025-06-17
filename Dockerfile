@@ -27,7 +27,7 @@ RUN yarn install
 COPY . .
 
 # expose the port 3000
-EXPOSE 3000
+EXPOSE 3001
 
 # start the application
 CMD ["yarn", "dev"]

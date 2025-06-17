@@ -152,10 +152,10 @@ yarn && docker-compose up --build
 docker build -t facebook-album-downloader .
 
 # For Run
-docker run -p 3000:3000 facebook-album-downloader
+docker run -p 3001:3001 facebook-album-downloader
 ```
 
-App is running on [http://localhost:3000](http://localhost:3000)
+App is running on [http://localhost:3001](http://localhost:3001)
 
 **For Production Build &amp; Build Start**
 
